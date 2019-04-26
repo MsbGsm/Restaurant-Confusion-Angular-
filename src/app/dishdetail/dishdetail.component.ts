@@ -38,6 +38,7 @@ export class DishdetailComponent implements OnInit {
   commentForm: FormGroup;
   comment: Comment;
   errMess: string;
+  dishCopy: Dish;
   visibility =  'shown';
 
   formErrors = {
@@ -70,7 +71,7 @@ export class DishdetailComponent implements OnInit {
       .subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
       .pipe(switchMap((params: Params) => { this.visibility = 'hidden'; return this.dishService.getDish(params['id']); }))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); this.visibility = 'shown' }, errmess => this.errMess = <any>errmess);
+      .subscribe(dish => { this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); this.visibility = 'shown' }, errmess => this.errMess = <any>errmess);
   }
 
   createForm(){
@@ -109,7 +110,12 @@ export class DishdetailComponent implements OnInit {
     const currentDate: Date = new Date();
     this.comment = this.commentForm.value;
     this.comment['date'] = currentDate.toISOString();
-    this.dish.comments.push(this.comment);
+    this.dishCopy.comments.push(this.comment);
+    this.dishService.putDish(this.dishCopy)
+      .subscribe(dish => {
+        this.dish = dish; this.dishCopy = dish;
+      },
+      errmess => { this.dish = null; this.dishCopy = null; this.errMess = <any>errmess; });
     this.commentFormDirective.resetForm();
     this.commentForm.reset({
       rating: 5,
