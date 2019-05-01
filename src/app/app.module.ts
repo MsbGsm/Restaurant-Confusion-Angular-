@@ -37,6 +37,7 @@ import { LoginComponent } from './login/login.component';
 import { baseURL } from './shared/baseurl';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { HighlightDirective } from './directives/highlight.directive';
+import { FeedbackService } from './services/feedback.service';
 
 
 
@@ -80,7 +81,8 @@ import { HighlightDirective } from './directives/highlight.directive';
     PromotionService,
     LeaderService,
     {provide: 'BaseURL', useValue: baseURL},
-    ProcessHTTPMsgService
+    ProcessHTTPMsgService,
+    FeedbackService
   ],
   entryComponents: [
     LoginComponent

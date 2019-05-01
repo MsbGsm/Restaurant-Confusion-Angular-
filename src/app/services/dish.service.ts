@@ -6,7 +6,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Dish } from '../shared/dish';
 import { baseURL } from '../shared/baseurl';
 import { ProcessHTTPMsgService } from './process-httpmsg.service';
-import { pipe } from '@angular/core/src/render3/pipe';
 
 @Injectable({
   providedIn: 'root'
