@@ -13,6 +13,7 @@ import { Comment } from '../shared/comment';
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
   styleUrls: ['./dishdetail.component.scss'],
+  // tslint:disable-next-line: use-host-property-decorator
   host: {
     '[@flyInOut]': 'true',
     'style': 'display: block;'
@@ -40,7 +41,7 @@ export class DishdetailComponent implements OnInit {
   formErrors = {
     'author': '',
     'comment': ''
-  }
+  };
 
   validationMessages = {
     'author': {
@@ -50,16 +51,17 @@ export class DishdetailComponent implements OnInit {
     'comment': {
       'required': 'Your comment is required.'
     }
-  }
+  };
 
-  constructor(private dishService: DishService,
-              private route: ActivatedRoute,
-              private location: Location,
-              private fb: FormBuilder,
-              @Inject('BaseURL') private BaseURL) 
-              {
-                this.createForm();
-              }
+  constructor (
+      private dishService: DishService,
+      private route: ActivatedRoute,
+      private location: Location,
+      private fb: FormBuilder,
+      @Inject('BaseURL') private BaseURL
+    ) {
+        this.createForm();
+      }
 
 
   ngOnInit() {
@@ -67,10 +69,16 @@ export class DishdetailComponent implements OnInit {
       .subscribe(dishIds => this.dishIds = dishIds);
     this.route.params
       .pipe(switchMap((params: Params) => { this.visibility = 'hidden'; return this.dishService.getDish(params['id']); }))
-      .subscribe(dish => { this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); this.visibility = 'shown' }, errmess => this.errMess = <any>errmess);
+      .subscribe(
+        dish => {
+          this.dish = dish;
+          this.dishCopy = dish;
+          this.setPrevNext(dish.id);
+          this.visibility = 'shown'; },
+        errmess => this.errMess = <any>errmess);
   }
 
-  createForm(){
+  createForm() {
     this.commentForm = this.fb.group({
       rating: [5],
       author: ['', [Validators.required, Validators.minLength(2)]],
@@ -79,12 +87,12 @@ export class DishdetailComponent implements OnInit {
 
     this.commentForm.valueChanges
       .subscribe(data => this.onValueChanged(data));
-    
+
     this.onValueChanged();
   }
 
   onValueChanged(data?: any) {
-    if (!this.commentForm) { return; };
+    if (!this.commentForm) { return; }
     const form = this.commentForm;
     for (const field in this.formErrors) {
       if (this.formErrors.hasOwnProperty(field)) {
@@ -117,12 +125,12 @@ export class DishdetailComponent implements OnInit {
       rating: 5,
       author: '',
       comment: ''
-    })
+    });
   }
 
   setPrevNext(dishId: string) {
     const index = this.dishIds.indexOf(dishId);
-    this.prev = this.dishIds[(this.dishIds.length + index -1) % this.dishIds.length];
+    this.prev = this.dishIds[(this.dishIds.length + index - 1) % this.dishIds.length];
     this.next = this.dishIds[(this.dishIds.length + index + 1) % this.dishIds.length];
   }
 
